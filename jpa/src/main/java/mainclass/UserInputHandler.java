@@ -9,6 +9,7 @@ public class UserInputHandler {
         int choice = readIntInput();
         while (choice < 0 || choice > maxChoices) {
             System.out.println("You have to enter a number between 0 and " + maxChoices);
+            choice = readIntInput();
         }
         return choice;
     }
@@ -24,10 +25,15 @@ public class UserInputHandler {
     }
 
     public static String readStringInput() {
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+        while (input == null || input.trim().isEmpty()) {
+            System.out.println("Empty input");
+        }
+        return input;
     }
 
-    public static void pressEnterToContinue() {
+    public static void pressEnterToContinue(int menuChoice) {
+        if (menuChoice < 1) return;
         System.out.print("\nPress Enter to Continue...\n");
         scanner.nextLine();
     }

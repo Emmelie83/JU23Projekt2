@@ -3,10 +3,11 @@ package classes;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "StudentCourseGrade", schema = "projekt7")
+@Table(name = "StudentCourseGrade", schema = "projekt7", uniqueConstraints = @UniqueConstraint(columnNames = {"studentId", "courseId"}))
 
 public class StudentCourseGrade {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

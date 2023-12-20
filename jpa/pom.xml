@@ -12,6 +12,16 @@
     <artifactId>jpa</artifactId>
     <dependencies>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21-ea+24</version> <!-- Use the version that matches your JavaFX SDK version -->
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21-ea+24</version> <!-- Use the version that matches your JavaFX SDK version -->
+        </dependency>
+        <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
@@ -20,5 +30,6 @@
             <artifactId>jakarta.transaction-api</artifactId>
         </dependency>
     </dependencies>
+
 
 </project>

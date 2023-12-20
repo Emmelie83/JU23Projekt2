@@ -1,13 +1,9 @@
 package mainclass;
 
-import classes.Course;
-import classes.Student;
 import crud.Create;
 import crud.Delete;
 import crud.Read;
 import crud.Update;
-
-import static crud.Read.studentsFromCourse;
 
 public class Menu {
 
@@ -16,31 +12,35 @@ public class Menu {
         while (isRunning) {
             String createMenu = """
                     Register
-                    1. Course
-                    2. Student
-                    3. Teacher
+                    --------------
+                    1. New course
+                    2. New student
+                    3. New teacher
+                    4. New student course grade
                     0. Back
                     """;
             System.out.println(createMenu);
-            int menuChoice = UserInputHandler.menuInput(3);
+            int menuChoice = UserInputHandler.menuInput(4);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
                 case 1 -> Create.course();
                 case 2 -> Create.student();
                 case 3 -> Create.teacher();
+                case 4 -> Create.studentCourseGrade();
             }
-            UserInputHandler.pressEnterToContinue();
+            UserInputHandler.pressEnterToContinue(menuChoice);
         }
     }
 
-    static void read() {
+     static void read() {
         boolean isRunning = true;
         while (isRunning) {
             String readMenu = """
                     Show
-                    1. Course
-                    2. Statistics
-                    3. ShowStudents
+                    -------------------
+                    1. All courses
+                    2. Student grades for a course
+                    3. Show total amount of students
                     0. Back
                     """;
             System.out.println(readMenu);
@@ -48,20 +48,21 @@ public class Menu {
             switch (menuChoice) {
                 case 0 -> isRunning = false;
                 case 1 -> Read.showCourses();
-                case 2 -> readStatistics();
-                case 3 -> Read.showStudents();
+                case 2 -> Read.showStudentCourseGradesByCourseId();
+                case 3 -> Read.totalAmountOfStudents();
             }
-            UserInputHandler.pressEnterToContinue();
+            UserInputHandler.pressEnterToContinue(menuChoice);
         }
     }
 
-    static void readStatistics() {
+    static void count() {
         boolean isRunning = true;
         while (isRunning) {
             String readStatisticsMenu = """
                     Statistics
-                    1. Student grades
-                    2. Students in each class
+                    -------------------------
+                    1. Show grades per course
+                    2. Show students per course
                     0. Back
                     """;
 
@@ -69,10 +70,10 @@ public class Menu {
             int menuChoice = UserInputHandler.menuInput(2);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> Read.grades();
-                case 2 -> Read.studentsFromCourse();
+                case 1 -> Read.printGradeCountsByCourseId();
+                case 2 -> Read.printStudentsCountByCourseId();
             }
-            UserInputHandler.pressEnterToContinue();
+            UserInputHandler.pressEnterToContinue(menuChoice);
         }
     }
 
@@ -81,18 +82,21 @@ public class Menu {
         while (isRunning) {
             String updateMenu = """
                     Update
+                    ------------------------
                     1. Grades
                     2. Student name
+                    3. Add teacher to course
                     0. Back
                     """;
             System.out.println(updateMenu);
-            int menuChoice = UserInputHandler.menuInput(2);
+            int menuChoice = UserInputHandler.menuInput(3);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> Update.gradesNew();
-                case 2 -> Update.updateStudentName();
+                case 1 -> Update.grades();
+                case 2 -> Update.studentName();
+                case 3 -> Update.courseTeacher();
             }
-            UserInputHandler.pressEnterToContinue();
+            UserInputHandler.pressEnterToContinue(menuChoice);
         }
     }
 
@@ -101,6 +105,7 @@ public class Menu {
         while (isRunning) {
             String deleteMenu = """
                     Remove
+                    ----------
                     1. Student
                     2. Teacher
                     3. Course
@@ -114,19 +119,65 @@ public class Menu {
                 case 2 -> Delete.teacher();
                 case 3 -> Delete.course();
             }
-            UserInputHandler.pressEnterToContinue();
+            UserInputHandler.pressEnterToContinue(menuChoice);
         }
     }
 
     public static void showMain(){
         String mainMenu="""
                     Main menu
+                    -----------------------------------
                     1. Register course, student etc.
-                    2. Show statistics, grades, etc.
-                    3. Update existing data
-                    4. Remove
+                    2. Show courses, student grades etc.
+                    3. Show statistics
+                    4. Update existing data
+                    5. Remove
+                    6. Test
                     0. Quit
                     """;
         System.out.println(mainMenu);
+    }
+    public static String showMainTwo(){
+        String mainMenu="""
+                    Main menu
+                    -----------------------------------
+                    1. Register course, student etc.
+                    2. Show courses, student grades etc.
+                    3. Show statistics
+                    4. Update existing data
+                    5. Remove
+                    6. Test
+                    0. Quit
+                    """;
+        return mainMenu;
+    }
+
+    public static void testMenu(){
+        String menu ="""
+                Testmeny
+                ---------
+                1. Testa
+                """;
+        System.out.println(menu);
+        int menuChoice = UserInputHandler.menuInput(3);
+
+        switch (menuChoice){
+            case 1 -> Read.showAllStudentGrades();
+        }
+    }
+
+
+
+    //java fx
+    public static String readTwo(){
+        String readMenu = """
+                    Show
+                    -------------------
+                    1. All courses
+                    2. Student grades for a course
+                    3. Show total amount of students
+                    0. Back
+                    """;
+        return readMenu;
     }
 }
