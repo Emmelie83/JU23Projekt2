@@ -1,11 +1,7 @@
 package mainclass;
 
 import jakarta.persistence.*;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+
 import util.JPAUtil;
 
 import java.util.function.Consumer;
@@ -24,7 +20,6 @@ public class Main {
                 case 3 -> Menu.count();
                 case 4 -> Menu.update();
                 case 5 -> Menu.delete();
-                case 6 -> Menu.testMenu();
             }
         }
     }

@@ -4,6 +4,7 @@ import crud.Create;
 import crud.Delete;
 import crud.Read;
 import crud.Update;
+import crudServices.CreateService;
 
 public class Menu {
 
@@ -23,10 +24,10 @@ public class Menu {
             int menuChoice = UserInputHandler.menuInput(4);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> Create.course();
-                case 2 -> Create.student();
-                case 3 -> Create.teacher();
-                case 4 -> Create.studentCourseGrade();
+                case 1 -> CreateService.course();
+                case 2 -> CreateService.student();
+                case 3 -> CreateService.teacher();
+                case 4 -> CreateService.studentCourseGrade();
             }
             UserInputHandler.pressEnterToContinue(menuChoice);
         }
@@ -152,19 +153,6 @@ public class Menu {
         return mainMenu;
     }
 
-    public static void testMenu(){
-        String menu ="""
-                Testmeny
-                ---------
-                1. Testa
-                """;
-        System.out.println(menu);
-        int menuChoice = UserInputHandler.menuInput(3);
-
-        switch (menuChoice){
-            case 1 -> Read.showAllStudentGrades();
-        }
-    }
 
 
 

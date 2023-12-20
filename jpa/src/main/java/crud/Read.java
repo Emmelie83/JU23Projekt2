@@ -231,7 +231,7 @@ public class Read {
         if (!classrooms.isEmpty()) {
             String format = " %-20s%-20s%-20s%n";
             System.out.printf(format, "ID:", "Name:", "Capacity:");
-            System.out.printf(format, "--", "----:", "--------");
+            System.out.printf(format, "--", "----", "--------");
             for (Classroom c : classrooms) {
                 System.out.printf(format, c.getClassroomId(), c.getClassroomName(), c.getClassroomCapacity());
             }
