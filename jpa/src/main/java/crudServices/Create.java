@@ -1,11 +1,10 @@
 package crudServices;
 
 import classes.*;
-import crud.Create;
-import crud.Read;
 import mainclass.UserInputHandler;
+import repositories.*;
 
-public class CreateService {
+public class Create {
 
     public static void course() {
         System.out.println("Enter new course name: ");
@@ -14,25 +13,23 @@ public class CreateService {
         course.setName(name);
         Teacher teacher = null;
         while (teacher == null) {
-            Read.showTeachers();
+            Read.showAllTeachers();
             System.out.println("Which teacher (ID) would you like to assign?: ");
-            int teacherId = UserInputHandler.readIntInput();
-            teacher = Create.findTeacher(teacherId);
+            int teacherID = UserInputHandler.readIntInput();
+            teacher = TeacherRepository.getTeacherByID(teacherID);
             if (teacher == null)
-                System.out.println("\nError: Teacher with teacherId " + teacherId + " not found. Please try again.");
+                System.out.println("\nError: Teacher with teacherId " + teacherID + " not found. Please try again.");
         }
         Classroom classroom = null;
         while (classroom == null) {
-            Read.showClassrooms();
+            Read.showAllClassrooms();
             System.out.println("Which classroom (ID) would you like to assign?: ");
-            int classroomId = UserInputHandler.readIntInput();
-            classroom = Create.findClassroom(classroomId);
-            if (classroom == null)
-                System.out.println("Error: Classroom with classroomId " + classroomId + " not found. Please try again.");
+            int classroomID = UserInputHandler.readIntInput();
+            classroom = ClassroomRepository.getClassroomByID(classroomID);
         }
         course.setTeacher(teacher);
         course.setClassroom(classroom);
-        Create.persistObject(course);
+        CourseRepository.persistCourse(course);
         System.out.println("You have successfully added a new course.");
     }
 
@@ -44,7 +41,7 @@ public class CreateService {
         Student student = new Student();
         student.setFirstName(firstName);
         student.setLastName(lastName);
-        Create.persistObject(student);
+        StudentRepository.persistStudent(student);
         System.out.println("You have successfully added a new student.");
     }
 
@@ -56,44 +53,43 @@ public class CreateService {
         Teacher teacher = new Teacher();
         teacher.setFirstName(firstName);
         teacher.setLastName(lastName);
-        Create.persistObject(teacher);
+        TeacherRepository.persistTeacher(teacher);
         System.out.println("You have successfully added a new teacher.");
     }
 
     public static void studentCourseGrade() {
         Student student = null;
         while (student == null) {
-            Read.showStudents();
+            Read.showAllStudents();
             System.out.println("Which student (ID) do you want to grade?");
-            int studentId = UserInputHandler.readIntInput();
-            student = Create.findStudent(studentId);
+            int studentID = UserInputHandler.readIntInput();
+            student = StudentRepository.getStudentByID(studentID);
             if (student == null)
-                System.out.println("\nError: Student with studentId " + studentId + " not found. Please try again.\n");
+                System.out.println("\nError: Student with studentId " + studentID + " not found. Please try again.\n");
         }
         Course course = null;
         while (course == null) {
-            Read.showCourses();
+            Read.showAllCourses();
             System.out.println("In which course (ID) do you want to grade the student?");
-            int courseId = UserInputHandler.readIntInput();
-            course = Create.findCourse(courseId);
+            int courseID = UserInputHandler.readIntInput();
+            course = CourseRepository.getCourseByID(courseID);
             if (course == null)
-                System.out.println("\nError: Course with courseId " + courseId + " not found. Please try again.\n");
+                System.out.println("\nError: Course with course ID " + courseID + " not found. Please try again.\n");
         }
         Grade grade = null;
         while (grade == null) {
-            Read.showGrades();
+            Read.showAllGrades();
             System.out.println("Which grade (ID) do you want to assign?");
-            int gradeId = UserInputHandler.readIntInput();
-            grade = Create.findGrade(gradeId);
+            int gradeID = UserInputHandler.readIntInput();
+            grade = GradeRepository.getGradeByID(gradeID);
             if (grade == null)
-                System.out.println("\nError: Grade with gradeId " + gradeId + " not found. Please try again.\n");
+                System.out.println("\nError: Grade with grade ID " + gradeID + " not found. Please try again.\n");
         }
         StudentCourseGrade scg = new StudentCourseGrade();
         scg.setStudent(student);
         scg.setCourse(course);
         scg.setGrade(grade);
-        Create.persistObject(scg);
+        StudentCourseGradeRepository.persistStudentCourseGrade(scg);
         System.out.println("You have successfully added a new student course grade.");
     }
-
 }

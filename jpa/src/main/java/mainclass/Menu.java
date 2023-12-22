@@ -1,10 +1,9 @@
 package mainclass;
 
-import crud.Create;
-import crud.Delete;
-import crud.Read;
-import crud.Update;
-import crudServices.CreateService;
+import crudServices.Create;
+import crudServices.Delete;
+import crudServices.Read;
+import crudServices.Update;
 
 public class Menu {
 
@@ -24,10 +23,10 @@ public class Menu {
             int menuChoice = UserInputHandler.menuInput(4);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> CreateService.course();
-                case 2 -> CreateService.student();
-                case 3 -> CreateService.teacher();
-                case 4 -> CreateService.studentCourseGrade();
+                case 1 -> Create.course();
+                case 2 -> Create.student();
+                case 3 -> Create.teacher();
+                case 4 -> Create.studentCourseGrade();
             }
             UserInputHandler.pressEnterToContinue(menuChoice);
         }
@@ -40,17 +39,19 @@ public class Menu {
                     Show
                     -------------------
                     1. All courses
-                    2. Student grades for a course
-                    3. Show total amount of students
+                    2. All student course grades
+                    3. All grades for a course
+                    4. All grades for a student
                     0. Back
                     """;
             System.out.println(readMenu);
-            int menuChoice = UserInputHandler.menuInput(3);
+            int menuChoice = UserInputHandler.menuInput(4);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> Read.showCourses();
-                case 2 -> Read.showStudentCourseGradesByCourseId();
-                case 3 -> Read.totalAmountOfStudents();
+                case 1 -> Read.showAllCourses();
+                case 2 -> Read.showAllStudentCourseGrades();
+                case 3 -> Read.showStudentCourseGradesByCourseID();
+                case 4 -> Read.showStudentCourseGradesByStudent();
             }
             UserInputHandler.pressEnterToContinue(menuChoice);
         }
@@ -62,17 +63,18 @@ public class Menu {
             String readStatisticsMenu = """
                     Statistics
                     -------------------------
-                    1. Show grades per course
-                    2. Show students per course
+                    1. Show number of different grades for a course
+                    2. Show number of students for a course
                     0. Back
                     """;
 
             System.out.println(readStatisticsMenu);
-            int menuChoice = UserInputHandler.menuInput(2);
+            int menuChoice = UserInputHandler.menuInput(3);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> Read.printGradeCountsByCourseId();
-                case 2 -> Read.printStudentsCountByCourseId();
+                case 1 -> Read.showGradeCountsByCourseID();
+                case 2 -> Read.showStudentCountByCourseID();
+                case 3 -> Read.showTotalStudentCount();
             }
             UserInputHandler.pressEnterToContinue(menuChoice);
         }
@@ -93,7 +95,7 @@ public class Menu {
             int menuChoice = UserInputHandler.menuInput(3);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
-                case 1 -> Update.grades();
+                case 1 -> Update.studentCourseGrade();
                 case 2 -> Update.studentName();
                 case 3 -> Update.courseTeacher();
             }
