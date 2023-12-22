@@ -22,9 +22,6 @@ public class TeacherRepository {
             teacher = em.find(Teacher.class, teacherID);
             em.close();
             return teacher;
-        } catch (InputMismatchException e) {
-            System.out.println("\nError: Teacher with teacher ID " + teacherID + " not found. Please try again.\n");
-            return null;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage() + ".");
             return null;
@@ -39,7 +36,7 @@ public class TeacherRepository {
             Teacher managedTeacher = em.merge(teacher);
             em.remove(managedTeacher);
             transaction.commit();
-            System.out.println("Teacher and associated courses successfully removed.");
+            System.out.println("Teacher successfully removed.");
         } catch (Exception e) {
             System.out.println("Error removing teacher: " + e.getMessage());
         }

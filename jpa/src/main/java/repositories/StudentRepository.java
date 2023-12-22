@@ -23,7 +23,6 @@ public class StudentRepository {
             em.close();
             return student;
         } catch (Exception e) {
-            System.out.println("Error: " + e.toString() + ". Try again.");
             return null;
         }
     }

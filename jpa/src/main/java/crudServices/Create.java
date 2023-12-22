@@ -14,11 +14,15 @@ public class Create {
         Teacher teacher = null;
         while (teacher == null) {
             Read.showAllTeachers();
-            System.out.println("Which teacher (ID) would you like to assign?: ");
+            System.out.println("Which teacher (ID) would you like to assign?. Enter 0 for no teacher: ");
             int teacherID = UserInputHandler.readIntInput();
+            if (teacherID == 0) {
+                teacher = null;
+                break;
+            }
             teacher = TeacherRepository.getTeacherByID(teacherID);
             if (teacher == null)
-                System.out.println("\nError: Teacher with teacherId " + teacherID + " not found. Please try again.");
+                System.out.println("\nError: Teacher with ID " + teacherID + " not found. Please try again:\n");
         }
         Classroom classroom = null;
         while (classroom == null) {
@@ -26,6 +30,8 @@ public class Create {
             System.out.println("Which classroom (ID) would you like to assign?: ");
             int classroomID = UserInputHandler.readIntInput();
             classroom = ClassroomRepository.getClassroomByID(classroomID);
+            if (classroom == null)
+                System.out.println("\nError: Classroom with ID " + classroomID + " not found. Please try again:\n");
         }
         course.setTeacher(teacher);
         course.setClassroom(classroom);
@@ -65,7 +71,7 @@ public class Create {
             int studentID = UserInputHandler.readIntInput();
             student = StudentRepository.getStudentByID(studentID);
             if (student == null)
-                System.out.println("\nError: Student with studentId " + studentID + " not found. Please try again.\n");
+                System.out.println("\nError: Student with ID " + studentID + " not found. Please try again:\n");
         }
         Course course = null;
         while (course == null) {
@@ -74,7 +80,7 @@ public class Create {
             int courseID = UserInputHandler.readIntInput();
             course = CourseRepository.getCourseByID(courseID);
             if (course == null)
-                System.out.println("\nError: Course with course ID " + courseID + " not found. Please try again.\n");
+                System.out.println("\nError: Course with ID " + courseID + " not found. Please try again:\n");
         }
         Grade grade = null;
         while (grade == null) {
@@ -83,7 +89,7 @@ public class Create {
             int gradeID = UserInputHandler.readIntInput();
             grade = GradeRepository.getGradeByID(gradeID);
             if (grade == null)
-                System.out.println("\nError: Grade with grade ID " + gradeID + " not found. Please try again.\n");
+                System.out.println("\nError: Grade with ID " + gradeID + " not found. Please try again:\n");
         }
         StudentCourseGrade scg = new StudentCourseGrade();
         scg.setStudent(student);

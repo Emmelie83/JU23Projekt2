@@ -33,46 +33,54 @@ public class Delete {
                     }
                     boolean studentRemoved = StudentRepository.removeStudent(student);
                     if (studentRemoved) {
-                        System.out.println("Student with ID " + studentID + " successfully removed.");
+                        System.out.println("\nStudent with ID " + studentID + " successfully removed.");
                     } else {
-                        System.out.println("Error: Student with ID " + studentID + " removal was unsuccessful.");
+                        System.out.println("\nError: Student with ID " + studentID + " removal was unsuccessful.\n");
                     }
                 } else {
-                    System.out.println("Error: Student with ID " + studentID + " not found. Please enter a valid student ID.");
+                    System.out.println("\nError: Student with ID " + studentID + " not found. Please try again:\n");
                 }
             } catch (Exception e) {
-                System.out.println("An unexpected error occurred. Please try again.");
+                System.out.println("\nAn unexpected error occurred. Please try again.\n");
             }
         }
     }
 
     public static void course() {
-        System.out.println("Which course (ID) would you like to remove?: ");
-        Read.showAllCourses();
-        int courseID = UserInputHandler.readIntInput();
-        Course course = CourseRepository.getCourseByID(courseID);
-        if (course != null) {
-            CourseRepository.removeCourse(course);
-        } else System.out.println("Error: Course with course ID " + courseID + " not found.");
+        Course course = null;
+        while (course == null) {
+            Read.showAllCourses();
+            System.out.println("Which course (ID) would you like to remove?: ");
+            int courseID = UserInputHandler.readIntInput();
+            course = CourseRepository.getCourseByID(courseID);
+            if (course == null) {
+                System.out.println("\nError: Course with ID " + courseID + " not found. Please try again:\n");
+                return;
+            }
+        }
+        CourseRepository.removeCourse(course);
+        System.out.println("Course successfully removed.");
     }
 
 
     public static void teacher() {
-        Read.showAllTeachers();
-        System.out.println("Which teacher (ID) would you like to remove? ");
-        int teacherID = UserInputHandler.readIntInput();
-        Teacher teacher = TeacherRepository.getTeacherByID(teacherID);
-        if (teacher == null) {
-            System.out.println("Error: Teacher with ID " + teacherID + " not found.");
-            return;
+        Teacher teacher = null;
+        while (teacher == null) {
+            Read.showAllTeachers();
+            System.out.println("Which teacher (ID) would you like to remove? ");
+            int teacherID = UserInputHandler.readIntInput();
+            teacher = TeacherRepository.getTeacherByID(teacherID);
+            if (teacher == null) {
+                System.out.println("\nError: Teacher with ID " + teacherID + " not found. Please try again:");
+                return;
+            }
         }
         List<Course> courses = CourseRepository.getCoursesByTeacher(teacher);
-        if (courses.isEmpty()) {
-            System.out.println("No courses associated with this teacher.");
+        for (Course course : courses) {
+            course.setTeacher(null);
+            CourseRepository.updateCourse(course);
         }
-        for (Course course : courses) CourseRepository.removeCourse(course);
         TeacherRepository.removeTeacher(teacher);
-
     }
 }
 

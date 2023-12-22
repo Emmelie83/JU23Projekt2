@@ -38,10 +38,8 @@ public class CourseRepository {
                         .setParameter("course", course)
                         .executeUpdate();
                 Course managedCourse = em.find(Course.class, course.getId());
-
                 if (managedCourse != null) em.remove(managedCourse);
                 transaction.commit();
-                System.out.println("Course successfully removed.");
             } catch (Exception e) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -83,6 +81,27 @@ public class CourseRepository {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage() + ". Try again.");
             return null;
+        }
+    }
+
+    public static void updateCourse(Course course) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction transaction = null;
+
+        try {
+            transaction = em.getTransaction();
+            transaction.begin();
+
+            em.merge(course);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();  // Handle the exception appropriately (log it, throw a custom exception, etc.)
+        } finally {
+            em.close();
         }
     }
 

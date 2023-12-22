@@ -8,105 +8,6 @@ import java.util.List;
 
 public class Read {
 
-    public static void showAllStudentCourseGrades() {
-        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getAllStudentCourseGrades();
-        if (studentCourseGrades.isEmpty()) {
-            System.out.println("No student course grades found.");
-            return;
-        }
-        String format = "%-20s%-10s%s%n";
-        System.out.printf(format, "Course:", "Grade:", "Student");
-        System.out.printf(format, "-------", "----", "----------------");
-        for (StudentCourseGrade scg : studentCourseGrades) {
-            System.out.printf(format,
-                    scg.getCourse().getName(),
-                    scg.getGrade().getName(),
-                    scg.getStudent().getFirstName() + " " + scg.getStudent().getLastName());
-        }
-    }
-
-    public static void showTotalStudentCount() {
-        Long studentCount = StudentRepository.getTotalStudentsCount();
-        if (studentCount == null) return;
-        System.out.println("There is a total of " + studentCount + " students in the school.");
-    }
-
-    public static void showGradeCountsByCourseID() {
-        showAllCourses();
-        System.out.println("Which course (ID) do you want to count the grades for?:");
-        int courseID = UserInputHandler.readIntInput();
-        List<Object[]> results = GradeRepository.getGradeCountsByCourseID(courseID);
-        if (results.isEmpty()) {
-            System.out.println("No grades found for the course");
-            return;
-        }
-        String format = "%-20s%s%n";
-        System.out.printf(format, "Grade:", "Count:");
-        System.out.printf(format, "----", "-----");
-        for (Object[] result : results) {
-            Grade grade = (Grade) result[0];
-            Long gradeCount = (Long) result[1];
-            if (grade != null) System.out.printf("%-20s%-20s%n", grade.getName(), gradeCount);
-        }
-    }
-
-    public static void showStudentCourseGradesByStudent() {
-        showAllStudents();
-        System.out.println("Which student (ID) do you want to show grades for?:");
-        int studentID = UserInputHandler.readIntInput();
-        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByStudentID(studentID);
-        if (studentCourseGrades.isEmpty()) {
-            System.out.println("No grades found for the student.");
-            return;
-        }
-        printStudentCourseGradesByStudent(studentCourseGrades);
-    }
-
-    public static void showStudentCourseGradesByStudent(int studentID) {
-        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByStudentID(studentID);
-        if (studentCourseGrades.isEmpty()) {
-            System.out.println("No grades found for the student.");
-            return;
-        }
-        printStudentCourseGradesByStudent(studentCourseGrades);
-    }
-
-    private static void printStudentCourseGradesByStudent(List<StudentCourseGrade> studentCourseGrades) {
-        String format = "%-10s%-20s%s%n";
-        System.out.printf(format, "ID:", "Course:", "Grade:");
-        System.out.printf(format, "--", "----", "-----");
-        studentCourseGrades.forEach((e) -> System.out.printf(
-                format, e.getCourse().getId(),
-                e.getCourse().getName(),
-                e.getGrade().getName()
-        ));
-    }
-
-    public static void showStudentCourseGradesByCourseID() {
-        showAllCourses();
-        System.out.println("Which course (ID) do you want to show grades for?:");
-        int courseID = UserInputHandler.readIntInput();
-        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByCourseID(courseID);
-        if (studentCourseGrades.isEmpty()) {
-            System.out.println("No grades found for the course.");
-            return;
-        }
-        String format = "%-20s%s%n";
-        System.out.printf(format, "Student name:", "Grade:");
-        System.out.printf(format, "------------", "-----");
-        for (StudentCourseGrade scg : studentCourseGrades) {
-            System.out.printf(format, scg.getStudent().getFirstName() + " " + scg.getStudent().getLastName(), scg.getGrade().getName());
-        }
-    }
-
-    public static void showStudentCountByCourseID() {
-        showAllCourses();
-        System.out.println("Which course (ID) do you want to show grades counts for?:");
-        int courseID = UserInputHandler.readIntInput();
-        Long studentCount = StudentRepository.getStudentCountByCourseID(courseID);
-        System.out.println("Number of students in this course: " + studentCount);
-    }
-
     public static void showAllTeachers() {
         List<Teacher> teachers = TeacherRepository.getAllTeachers();
         if (teachers.isEmpty()) {
@@ -177,6 +78,129 @@ public class Read {
         System.out.printf(format, "--", "----", "--------");
         for (Classroom c : classrooms)
             System.out.printf(format, c.getClassroomId(), c.getClassroomName(), c.getClassroomCapacity());
+    }
+
+    public static void showAllStudentCourseGrades() {
+        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getAllStudentCourseGrades();
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No student course grades found.");
+            return;
+        }
+        String format = "%-20s%-10s%s%n";
+        System.out.printf(format, "Course:", "Grade:", "Student");
+        System.out.printf(format, "-------", "----", "----------------");
+        for (StudentCourseGrade scg : studentCourseGrades) {
+            System.out.printf(format,
+                    scg.getCourse().getName(),
+                    scg.getGrade().getName(),
+                    scg.getStudent().getFirstName() + " " + scg.getStudent().getLastName());
+        }
+    }
+
+    public static void showStudentCourseGradesByStudent() {
+        Student student = null;
+        while (student == null) {
+            showAllStudents();
+            System.out.println("Which student (ID) do you want to show grades for?");
+            int studentID = UserInputHandler.readIntInput();
+            student = StudentRepository.getStudentByID(studentID);
+            if (student == null)
+                System.out.println("\nError: Student with student ID " + studentID + " not found. Please try again.\n");
+        }
+        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByStudentID(student.getId());
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No grades found for the student.");
+            return;
+        }
+        printStudentCourseGradesByStudent(studentCourseGrades);
+    }
+
+    public static void showStudentCourseGradesByStudent(int studentID) {
+        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByStudentID(studentID);
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No grades found for the student.");
+            return;
+        }
+        printStudentCourseGradesByStudent(studentCourseGrades);
+    }
+
+    private static void printStudentCourseGradesByStudent(List<StudentCourseGrade> studentCourseGrades) {
+        String format = "%-10s%-20s%s%n";
+        System.out.printf(format, "ID:", "Course:", "Grade:");
+        System.out.printf(format, "--", "----", "-----");
+        studentCourseGrades.forEach((e) -> System.out.printf(
+                format, e.getCourse().getId(),
+                e.getCourse().getName(),
+                e.getGrade().getName()
+        ));
+    }
+
+    public static void showStudentCourseGradesByCourseID() {
+        Course course = null;
+        while (course == null) {
+            showAllCourses();
+            System.out.println("Which course (ID) do you want to show grades for?");
+            int courseID = UserInputHandler.readIntInput();
+            course = CourseRepository.getCourseByID(courseID);
+            if (course == null)
+                System.out.println("\nError: Course with ID " + courseID + " not found. Please try again:\n");
+        }
+        List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByCourseID(course.getId());
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No grades found for the course.");
+            return;
+        }
+        String format = "%-20s%s%n";
+        System.out.printf(format, "Student name:", "Grade:");
+        System.out.printf(format, "------------", "-----");
+        for (StudentCourseGrade scg : studentCourseGrades) {
+            System.out.printf(format, scg.getStudent().getFirstName() + " " + scg.getStudent().getLastName(), scg.getGrade().getName());
+        }
+    }
+
+    public static void showTotalStudentCount() {
+        Long studentCount = StudentRepository.getTotalStudentsCount();
+        if (studentCount == null) return;
+        System.out.println("There is a total of " + studentCount + " students in the school.");
+    }
+
+    public static void showStudentCountByCourseID() {
+        Course course = null;
+        while (course == null) {
+            showAllCourses();
+            System.out.println("Which course (ID) do you want to show student counts for?");
+            int courseID = UserInputHandler.readIntInput();
+            course = CourseRepository.getCourseByID(courseID);
+            if (course == null)
+                System.out.println("\nError: Course with ID " + courseID + " not found. Please try again:\n");
+        }
+        Long studentCount = StudentRepository.getStudentCountByCourseID(course.getId());
+        System.out.println("Number of students in this course: " + studentCount);
+    }
+
+    public static void showGradeCountsByCourseID() {
+        Course course = null;
+        while (course == null) {
+            showAllCourses();
+            System.out.println("Which course (ID) do you want to show grade counts for?");
+            int courseID = UserInputHandler.readIntInput();
+            course = CourseRepository.getCourseByID(courseID);
+            if (course == null)
+                System.out.println("\nError: Course with ID " + courseID + " not found. Please try again:\n");
+        }
+        List<Object[]> results = GradeRepository.getGradeCountsByCourseID(course.getId());
+        if (results.isEmpty()) {
+            System.out.println("No grades found for the course");
+            return;
+        }
+        String format = "%-20s%s%n";
+        System.out.printf(format, "Grade:", "Count:");
+        System.out.printf(format, "----", "-----");
+        for (Object[] result : results) {
+            Grade grade = (Grade) result[0];
+            Long gradeCount = (Long) result[1];
+            if (grade != null) System.out.printf("%-20s%-20s%n", grade.getName(), gradeCount);
+        }
     }
 
 }

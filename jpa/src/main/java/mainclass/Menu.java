@@ -135,39 +135,9 @@ public class Menu {
                     3. Show statistics
                     4. Update existing data
                     5. Remove
-                    6. Test
                     0. Quit
                     """;
         System.out.println(mainMenu);
     }
-    public static String showMainTwo(){
-        String mainMenu="""
-                    Main menu
-                    -----------------------------------
-                    1. Register course, student etc.
-                    2. Show courses, student grades etc.
-                    3. Show statistics
-                    4. Update existing data
-                    5. Remove
-                    6. Test
-                    0. Quit
-                    """;
-        return mainMenu;
-    }
 
-
-
-
-    //java fx
-    public static String readTwo(){
-        String readMenu = """
-                    Show
-                    -------------------
-                    1. All courses
-                    2. Student grades for a course
-                    3. Show total amount of students
-                    0. Back
-                    """;
-        return readMenu;
-    }
 }
