@@ -1,11 +1,8 @@
 package crudServices;
 
 import classes.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import mainclass.UserInputHandler;
 import repositories.*;
-import util.JPAUtil;
 
 import java.util.List;
 
@@ -13,7 +10,10 @@ public class Read {
 
     public static void showAllStudentCourseGrades() {
         List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getAllStudentCourseGrades();
-        if (studentCourseGrades == null) return;
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No student course grades found.");
+            return;
+        }
         String format = "%-20s%-10s%s%n";
         System.out.printf(format, "Course:", "Grade:", "Student");
         System.out.printf(format, "-------", "----", "----------------");
@@ -25,25 +25,53 @@ public class Read {
         }
     }
 
+    public static void showTotalStudentCount() {
+        Long studentCount = StudentRepository.getTotalStudentsCount();
+        if (studentCount == null) return;
+        System.out.println("There is a total of " + studentCount + " students in the school.");
+    }
+
+    public static void showGradeCountsByCourseID() {
+        showAllCourses();
+        System.out.println("Which course (ID) do you want to count the grades for?:");
+        int courseID = UserInputHandler.readIntInput();
+        List<Object[]> results = GradeRepository.getGradeCountsByCourseID(courseID);
+        if (results.isEmpty()) {
+            System.out.println("No grades found for the course");
+            return;
+        }
+        String format = "%-20s%s%n";
+        System.out.printf(format, "Grade:", "Count:");
+        System.out.printf(format, "----", "-----");
+        for (Object[] result : results) {
+            Grade grade = (Grade) result[0];
+            Long gradeCount = (Long) result[1];
+            if (grade != null) System.out.printf("%-20s%-20s%n", grade.getName(), gradeCount);
+        }
+    }
+
     public static void showStudentCourseGradesByStudent() {
         showAllStudents();
         System.out.println("Which student (ID) do you want to show grades for?:");
         int studentID = UserInputHandler.readIntInput();
         List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByStudentID(studentID);
-        if (studentCourseGrades == null) return;
-        String format = "%-10s%-20s%s%n";
-        System.out.printf(format, "ID:", "Course:", "Grade:");
-        System.out.printf(format, "--", "----", "-----");
-        studentCourseGrades.forEach((e) -> System.out.printf(
-                format, e.getCourse().getId(),
-                e.getCourse().getName(),
-                e.getGrade().getName()
-        ));
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No grades found for the student.");
+            return;
+        }
+        printStudentCourseGradesByStudent(studentCourseGrades);
     }
 
     public static void showStudentCourseGradesByStudent(int studentID) {
         List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByStudentID(studentID);
-        if (studentCourseGrades.isEmpty()) return;
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No grades found for the student.");
+            return;
+        }
+        printStudentCourseGradesByStudent(studentCourseGrades);
+    }
+
+    private static void printStudentCourseGradesByStudent(List<StudentCourseGrade> studentCourseGrades) {
         String format = "%-10s%-20s%s%n";
         System.out.printf(format, "ID:", "Course:", "Grade:");
         System.out.printf(format, "--", "----", "-----");
@@ -59,29 +87,15 @@ public class Read {
         System.out.println("Which course (ID) do you want to show grades for?:");
         int courseID = UserInputHandler.readIntInput();
         List<StudentCourseGrade> studentCourseGrades = StudentCourseGradeRepository.getStudentCourseGradesByCourseID(courseID);
-        if (studentCourseGrades.isEmpty()) return;
+        if (studentCourseGrades.isEmpty()) {
+            System.out.println("No grades found for the course.");
+            return;
+        }
         String format = "%-20s%s%n";
         System.out.printf(format, "Student name:", "Grade:");
         System.out.printf(format, "------------", "-----");
         for (StudentCourseGrade scg : studentCourseGrades) {
             System.out.printf(format, scg.getStudent().getFirstName() + " " + scg.getStudent().getLastName(), scg.getGrade().getName());
-        }
-    }
-
-
-    public static void showGradeCountsByCourseID() {
-        showAllCourses();
-        System.out.println("Which course (ID) do you want to count the grades for?:");
-        int courseID = UserInputHandler.readIntInput();
-        List<Object[]> results = GradeRepository.getGradeCountsByCourseID(courseID);
-        if (results.isEmpty()) return;
-        String format = "%-20s%s%n";
-        System.out.printf(format, "Grade:", "Count:");
-        System.out.printf(format, "----", "-----");
-        for (Object[] result : results) {
-            Grade grade = (Grade) result[0];
-            Long gradeCount = (Long) result[1];
-            if (grade != null) System.out.printf("%-20s%-20s%n", grade.getName(), gradeCount);
         }
     }
 
@@ -95,6 +109,10 @@ public class Read {
 
     public static void showAllTeachers() {
         List<Teacher> teachers = TeacherRepository.getAllTeachers();
+        if (teachers.isEmpty()) {
+            System.out.println("No teachers found.");
+            return;
+        }
         String format = "%-20s%s%n";
         System.out.printf(format, "ID:", "Teacher:");
         System.out.printf(format, "--", "--------");
@@ -159,12 +177,6 @@ public class Read {
         System.out.printf(format, "--", "----", "--------");
         for (Classroom c : classrooms)
             System.out.printf(format, c.getClassroomId(), c.getClassroomName(), c.getClassroomCapacity());
-    }
-
-    public static void showTotalStudentCount() {
-        Long studentCount = StudentRepository.getTotalStudentsCount();
-        if (studentCount == null) return;
-        System.out.println("There is a total of " + studentCount + " students in the school.");
     }
 
 }

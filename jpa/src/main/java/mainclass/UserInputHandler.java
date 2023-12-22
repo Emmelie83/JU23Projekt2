@@ -27,7 +27,7 @@ public class UserInputHandler {
     public static String readStringInput() {
         String input = scanner.nextLine();
         while (input == null || input.trim().isEmpty()) {
-            System.out.println("Empty input. Please enter a non-empty string:");
+            System.out.println("Empty input. Please try again:");
             input = scanner.nextLine();
         }
         return input;

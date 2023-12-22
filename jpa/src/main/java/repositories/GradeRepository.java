@@ -1,6 +1,5 @@
 package repositories;
 
-import classes.Classroom;
 import classes.Grade;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -9,14 +8,12 @@ import util.JPAUtil;
 import java.util.InputMismatchException;
 import java.util.List;
 
-import static mainclass.Main.inTransaction;
-
 public class GradeRepository {
 
     public static Grade getGradeByID(int gradeID) {
         try {
             EntityManager em = JPAUtil.getEntityManager();
-            Grade grade = null;
+            Grade grade;
             grade = em.find(Grade.class, gradeID);
             em.close();
             return grade;
@@ -34,7 +31,7 @@ public class GradeRepository {
             em.close();
             return grades;
         } catch (Exception e) {
-            System.out.println("Error: " + e.toString() + ". Try again.");
+            System.out.println("Error: " + e.getMessage());
             return null;
         }
     }
@@ -57,15 +54,9 @@ public class GradeRepository {
             System.out.println("Error: Course with course ID " + courseID + " not found. Please try again.");
             return null;
         } catch (Exception e) {
-            System.out.println("Error: " + e.toString() + ". Try again.");
+            System.out.println("Error: " + e.getMessage());
             return null;
         }
-    }
-
-    public static void persistGrade(Grade grade) {
-        EntityManager em = JPAUtil.getEntityManager();
-        inTransaction(entityManager -> entityManager.persist(grade));
-        em.close();
     }
 
 }

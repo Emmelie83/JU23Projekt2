@@ -1,12 +1,10 @@
 package repositories;
 
-import classes.Classroom;
 import classes.Course;
 import classes.Teacher;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
-import mainclass.UserInputHandler;
 import util.JPAUtil;
 
 import java.util.InputMismatchException;
@@ -18,7 +16,7 @@ public class CourseRepository {
     public static Course getCourseByID(int courseID) {
         try {
             EntityManager em = JPAUtil.getEntityManager();
-            Course course = null;
+            Course course;
             course = em.find(Course.class, courseID);
             em.close();
             return course;
@@ -51,7 +49,7 @@ public class CourseRepository {
                 System.out.println("Error removing course: " + e.getMessage());
             }
         } catch (Exception e) {
-            System.out.println("Error opening EntityManager: " + e.getMessage());
+            System.out.println("An error occurred.");
         }
     }
 
@@ -68,7 +66,7 @@ public class CourseRepository {
             em.close();
             return objectList;
         } catch (Exception e) {
-            System.out.println("Error: " + e.toString() + ". Try again.");
+            System.out.println("Error: " + e.getMessage());
             return null;
         }
     }
