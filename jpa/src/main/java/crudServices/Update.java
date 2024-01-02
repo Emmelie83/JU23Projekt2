@@ -43,7 +43,10 @@ public class Update {
                 if (grade == null)
                     System.out.println("\nError: Grade with ID " + gradeID + " not found. Please try again:\n");
             }
-            StudentCourseGradeRepository.updateStudentCourseGrade(grade, student.getId(), course.getId());
+            StudentCourseGrade scg = StudentCourseGradeRepository.getStudentCourseGradeByStudentIDAndCourseID(student.getId(), course.getId());
+            if (scg != null) scg.setGrade(grade);
+            StudentCourseGradeRepository.mergeStudentCourseGrade(scg);
+            System.out.println("Student course grade successfully updated.");
         } catch (Exception e) {
             System.out.println("An unexpected error occurred. Please try again.");
         }

@@ -99,7 +99,7 @@ public class CourseRepository {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            e.printStackTrace();  // Handle the exception appropriately (log it, throw a custom exception, etc.)
+            e.printStackTrace();
         } finally {
             em.close();
         }

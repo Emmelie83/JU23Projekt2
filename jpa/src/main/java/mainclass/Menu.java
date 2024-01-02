@@ -86,9 +86,9 @@ public class Menu {
             String updateMenu = """
                     Update
                     ------------------------
-                    1. Grades
+                    1. Student course grades
                     2. Student name
-                    3. Add teacher to course
+                    3. Teacher for a course
                     0. Back
                     """;
             System.out.println(updateMenu);
