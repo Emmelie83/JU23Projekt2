@@ -108,29 +108,6 @@ public class StudentCourseGradeRepository {
         }
     }
 
-//    public static void updateStudentCourseGrade(Grade grade, int studentID, int courseID) {
-//        EntityManager em = JPAUtil.getEntityManager();
-//        EntityTransaction transaction = em.getTransaction();
-//        try {
-//            transaction.begin();
-//            Query query = em.createQuery(
-//                    "UPDATE StudentCourseGrade scg SET scg.grade = :grade " +
-//                            "WHERE scg.student.id = :studentId AND scg.course.id = :courseId");
-//            query.setParameter("grade", grade);
-//            query.setParameter("studentId", studentID);
-//            query.setParameter("courseId", courseID);
-//            query.executeUpdate();
-//            transaction.commit();
-//            System.out.println("Student course grade successfully updated.");
-//        } catch (Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//                System.out.println("An error occurred. No changes made.");
-//            }
-//        } finally {
-//            em.close();
-//        }
-//    }
 
     public static void mergeStudentCourseGrade(StudentCourseGrade scg) {
         EntityManager em = JPAUtil.getEntityManager();
