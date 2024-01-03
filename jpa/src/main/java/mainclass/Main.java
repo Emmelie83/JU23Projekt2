@@ -12,7 +12,7 @@ public class Main {
         boolean isRunning = true;
         while (isRunning) {
             Menu.showMain();
-            int menuChoice = UserInputHandler.menuInput(7);
+            int menuChoice = UserInputHandler.menuInput(5);
             switch (menuChoice) {
                 case 0 -> isRunning = false;
                 case 1 -> Menu.create();

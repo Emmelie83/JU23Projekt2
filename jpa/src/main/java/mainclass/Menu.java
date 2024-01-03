@@ -65,6 +65,7 @@ public class Menu {
                     -------------------------
                     1. Show number of different grades for a course
                     2. Show number of students for a course
+                    3. Show number of students in the school
                     0. Back
                     """;
 
