@@ -91,8 +91,9 @@ public class Update {
             int teacherID = 0;
             while (teacher == null) {
                 Read.showAllTeachers();
-                System.out.println("Which teacher (ID) would you like to add? For no teacher, enter 0:");
+                System.out.println("Which teacher (ID) would you like to add to the course? For no teacher, enter 0:");
                 teacherID = UserInputHandler.readIntInput();
+                if (teacherID == 0) break;
                 teacher = TeacherRepository.getTeacherByID(teacherID);
                 if (teacher == null) {
                     System.out.println("\nError: Teacher with ID " + teacherID + " not found. Please try again:");
